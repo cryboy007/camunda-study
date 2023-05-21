@@ -44,3 +44,6 @@ camunda.bpm.client:
   worker-id: spring-boot-client # Identifies the worker towards the Engine 指定工作节点ID
   max-tasks: 1 #指定一次最多拉取任务数量
   lock-duration: 1000 #全局topic上锁时间,单位毫秒,上锁期间其他订阅者不拉取任务
+  basic-auth:
+    username: hetao
+    password: admin123

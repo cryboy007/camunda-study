@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableProcessApplication("myCamundaStudyApplication")
 @EnableScheduling
-@ComponentScan(basePackages = {"com.github.cryboy007.task"})
+@ComponentScan(basePackages = {"com.github.cryboy007.task","com.github.cryboy007.config","com.github.cryboy007.listens"})
 public class CamundaStudyApplication {
 
 	public static void main(String[] args) {
