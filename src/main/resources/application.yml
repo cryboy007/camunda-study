@@ -1,0 +1,40 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${database.user}
+    password: ${database.password}
+    url: ${database.url}?characterEncoding=UTF-8&useSSL=true&requireSSL=false&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      #最小空闲连接数量
+      minimum-idle: 5
+      #连接池最大连接数，默认是10
+      maximum-pool-size: 50
+      #此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      #空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 30000
+      #数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+
+camunda:
+  bpm:
+    application:
+      delete-upon-undeploy: false
+      scan-for-process-definitions: false
+      deploy-changed-only: true
+      resume-previous-versions: true
+      resume-previous-by: a value
+    job-execution:
+      enabled: true
+    metrics:
+      enabled: false
+      db-reporter-activate: false
+camunda.bpm.client:
+  base-url: http://10.10.10.3:7190/engine-rest # The URL pointing to the Camunda Platform Runtime REST API
+  async-response-timeout: 1000 # Defines the maximum duration of the long-polling request
+  worker-id: spring-boot-client # Identifies the worker towards the Engine
