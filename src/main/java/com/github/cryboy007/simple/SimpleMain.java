@@ -28,7 +28,7 @@ import org.springframework.util.Assert;
  */
 @Slf4j
 @RequiredArgsConstructor
-//@Component
+@Component
 public class SimpleMain implements CommandLineRunner {
     private final JobExecutor jobExecutor;
     private final HistoryService historyService;
