@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @ClassName UserTaskExampl
  * @Author tao.he
@@ -26,8 +29,12 @@ public class UserTaskExample {
     //	Process_user_task
     @GetMapping("/start/{processKey}")
     public void start(@PathVariable("processKey") String processKey) {
+        //指定人
         identityService.setAuthenticatedUserId("hetao");
-        runtimeService.startProcessInstanceByKey(processKey);
+        //添加变量
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("isFree",false);
+        runtimeService.startProcessInstanceByKey(processKey,variables);
 
     }
 }
