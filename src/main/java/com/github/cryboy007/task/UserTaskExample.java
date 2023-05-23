@@ -39,10 +39,11 @@ public class UserTaskExample {
 //        Map<String,Object> variables = new HashMap<>();
 //        variables.put("isFree",false);
         VariableMap variables = Variables.createVariables();
-        List<String> leaders = new LinkedList<>();
-        leaders.add("wangwu");
-        leaders.add("tony");
-        variables.put("leaders",leaders);
+//        List<String> leaders = new LinkedList<>();
+//        leaders.add("wangwu");
+//        leaders.add("tony");
+//        variables.put("leaders",leaders);
+        variables.put("originDays",10);
         runtimeService.startProcessInstanceByKey(processKey,variables);
 
     }
