@@ -3,6 +3,8 @@ package com.github.cryboy007.task;
 import lombok.RequiredArgsConstructor;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
+import org.camunda.bpm.engine.variable.VariableMap;
+import org.camunda.bpm.engine.variable.Variables;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,9 +35,14 @@ public class UserTaskExample {
     public void start(@PathVariable("processKey") String processKey) {
         //指定人
         identityService.setAuthenticatedUserId("hetao");
-        //添加变量
-        Map<String,Object> variables = new HashMap<>();
-        variables.put("isFree",false);
+//        //添加变量
+//        Map<String,Object> variables = new HashMap<>();
+//        variables.put("isFree",false);
+        VariableMap variables = Variables.createVariables();
+        List<String> leaders = new LinkedList<>();
+        leaders.add("wangwu");
+        leaders.add("tony");
+        variables.put("leaders",leaders);
         runtimeService.startProcessInstanceByKey(processKey,variables);
 
     }
