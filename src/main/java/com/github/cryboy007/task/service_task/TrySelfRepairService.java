@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @Slf4j
 public class TrySelfRepairService {
-    @Bean
+/*    @Bean
     @ExternalTaskSubscription(topicName = "try_self_repair",lockDuration = 50000,processDefinitionKeyIn = {"Process_external_task"} )
     public ExternalTaskHandler doSelfRepair() {
         return (externalTask,  externalTaskService) -> {
@@ -41,5 +41,5 @@ public class TrySelfRepairService {
                 externalTaskService.complete(externalTask);
             }
         };
-    }
+    }*/
 }

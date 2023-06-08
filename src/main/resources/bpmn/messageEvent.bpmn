@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1bgw2j2" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="Process_message_event" name="消息事件" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" camunda:initiator="starter">
+      <bpmn:outgoing>Flow_0vktflm</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0vktflm" sourceRef="StartEvent_1" targetRef="Activity_0dp09w6" />
+    <bpmn:userTask id="Activity_0dp09w6" name="在线订餐" camunda:assignee="${starter}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="endpoint" label="订餐用的程序" type="enum" defaultValue="wechat">
+            <camunda:value id="alipay" name="支付宝小程序" />
+            <camunda:value id="wechat" name="微信小程序" />
+          </camunda:formField>
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vktflm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0w66b16</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0w66b16" sourceRef="Activity_0dp09w6" targetRef="Activity_1jco3e0" />
+    <bpmn:serviceTask id="Activity_1jco3e0" name="处理订单" camunda:delegateExpression="${handleOrder}">
+      <bpmn:incoming>Flow_0w66b16</bpmn:incoming>
+      <bpmn:outgoing>Flow_04s56fc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_04s56fc" sourceRef="Activity_1jco3e0" targetRef="Event_15n8bh3" />
+    <bpmn:startEvent id="Event_0yyf61h" name="微信订餐">
+      <bpmn:outgoing>Flow_0qtmr5q</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1d7pwwz" messageRef="Message_04pv64j" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0qtmr5q" sourceRef="Event_0yyf61h" targetRef="Activity_18wq497" />
+    <bpmn:serviceTask id="Activity_18wq497" name="微信支付" camunda:type="external" camunda:topic="wechat_external">
+      <bpmn:incoming>Flow_0qtmr5q</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ubwlj9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:startEvent id="Event_1k0mjbp" name="支付宝订餐">
+      <bpmn:outgoing>Flow_0rg46jd</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0z0m4hr" messageRef="Message_20ndvl2" />
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0rg46jd" sourceRef="Event_1k0mjbp" targetRef="Activity_0a836t0" />
+    <bpmn:sequenceFlow id="Flow_0exco4n" sourceRef="Activity_0a836t0" targetRef="Activity_05b6emq" />
+    <bpmn:sequenceFlow id="Flow_0ubwlj9" sourceRef="Activity_18wq497" targetRef="Activity_05b6emq" />
+    <bpmn:intermediateThrowEvent id="Event_0fyhhi7">
+      <bpmn:incoming>Flow_1d4ceex</bpmn:incoming>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_1d4ceex" sourceRef="Activity_05b6emq" targetRef="Event_0fyhhi7" />
+    <bpmn:serviceTask id="Activity_05b6emq" name="成功支付" camunda:delegateExpression="${successOrder}">
+      <bpmn:incoming>Flow_0exco4n</bpmn:incoming>
+      <bpmn:incoming>Flow_0ubwlj9</bpmn:incoming>
+      <bpmn:outgoing>Flow_1d4ceex</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0a836t0" name="支付宝支付" camunda:type="external" camunda:topic="alipay_external">
+      <bpmn:incoming>Flow_0rg46jd</bpmn:incoming>
+      <bpmn:outgoing>Flow_0exco4n</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:intermediateThrowEvent id="Event_15n8bh3">
+      <bpmn:incoming>Flow_04s56fc</bpmn:incoming>
+    </bpmn:intermediateThrowEvent>
+  </bpmn:process>
+  <bpmn:message id="Message_04pv64j" name="Message_wechat1" />
+  <bpmn:message id="Message_20ndvl2" name="Message_alipay1" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_message_event">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bxxk63_di" bpmnElement="Activity_0dp09w6">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_065onda_di" bpmnElement="Activity_1jco3e0">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0hhhbro_di" bpmnElement="Event_0yyf61h">
+        <dc:Bounds x="179" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="175" y="285" width="45" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0imhdn5_di" bpmnElement="Activity_18wq497">
+        <dc:Bounds x="270" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1bmkqzb_di" bpmnElement="Event_1k0mjbp">
+        <dc:Bounds x="179" y="352" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="169" y="395" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0fyhhi7_di" bpmnElement="Event_0fyhhi7">
+        <dc:Bounds x="632" y="292" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0m9kwox_di" bpmnElement="Activity_05b6emq">
+        <dc:Bounds x="490" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1mkt9ln_di" bpmnElement="Activity_0a836t0">
+        <dc:Bounds x="270" y="330" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1eyl38r_di" bpmnElement="Event_15n8bh3">
+        <dc:Bounds x="592" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0vktflm_di" bpmnElement="Flow_0vktflm">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0w66b16_di" bpmnElement="Flow_0w66b16">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04s56fc_di" bpmnElement="Flow_04s56fc">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="592" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qtmr5q_di" bpmnElement="Flow_0qtmr5q">
+        <di:waypoint x="215" y="260" />
+        <di:waypoint x="270" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rg46jd_di" bpmnElement="Flow_0rg46jd">
+        <di:waypoint x="215" y="370" />
+        <di:waypoint x="270" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0exco4n_di" bpmnElement="Flow_0exco4n">
+        <di:waypoint x="370" y="370" />
+        <di:waypoint x="440" y="370" />
+        <di:waypoint x="440" y="330" />
+        <di:waypoint x="490" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ubwlj9_di" bpmnElement="Flow_0ubwlj9">
+        <di:waypoint x="370" y="260" />
+        <di:waypoint x="440" y="260" />
+        <di:waypoint x="440" y="290" />
+        <di:waypoint x="490" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1d4ceex_di" bpmnElement="Flow_1d4ceex">
+        <di:waypoint x="590" y="310" />
+        <di:waypoint x="632" y="310" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
