@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0v2t2yk" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="Process_call_activity_subprocess" name="调用子流程-子流程" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1yrafj9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:parallelGateway id="Gateway_1523b7s">
+      <bpmn:incoming>Flow_1yrafj9</bpmn:incoming>
+      <bpmn:outgoing>Flow_156519v</bpmn:outgoing>
+      <bpmn:outgoing>Flow_132s3bi</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0085jp9</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:serviceTask id="Activity_0hzffqa" name="检测是否暴力" camunda:delegateExpression="${checkExplosion}">
+      <bpmn:incoming>Flow_156519v</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pgl5vu</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_15v8539" name="检测是否是境外IP" camunda:delegateExpression="${checkAbroadIp}">
+      <bpmn:incoming>Flow_0085jp9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ykzvam</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="Gateway_0l9eu31">
+      <bpmn:incoming>Flow_0pgl5vu</bpmn:incoming>
+      <bpmn:incoming>Flow_0ykzvam</bpmn:incoming>
+      <bpmn:incoming>Flow_1hzjvnr</bpmn:incoming>
+      <bpmn:outgoing>Flow_13o8w15</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:userTask id="Activity_0elyzvm" name="检测是否涉黄" camunda:assignee="tony">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="isYellow" label="是否涉黄" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_132s3bi</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hzjvnr</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_156519v" sourceRef="Gateway_1523b7s" targetRef="Activity_0hzffqa" />
+    <bpmn:sequenceFlow id="Flow_132s3bi" sourceRef="Gateway_1523b7s" targetRef="Activity_0elyzvm" />
+    <bpmn:sequenceFlow id="Flow_0085jp9" sourceRef="Gateway_1523b7s" targetRef="Activity_15v8539" />
+    <bpmn:sequenceFlow id="Flow_0pgl5vu" sourceRef="Activity_0hzffqa" targetRef="Gateway_0l9eu31" />
+    <bpmn:sequenceFlow id="Flow_0ykzvam" sourceRef="Activity_15v8539" targetRef="Gateway_0l9eu31" />
+    <bpmn:sequenceFlow id="Flow_1hzjvnr" sourceRef="Activity_0elyzvm" targetRef="Gateway_0l9eu31" />
+    <bpmn:sequenceFlow id="Flow_1yrafj9" sourceRef="StartEvent_1" targetRef="Gateway_1523b7s" />
+    <bpmn:endEvent id="Event_0sdjoj4">
+      <bpmn:incoming>Flow_13o8w15</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_13o8w15" sourceRef="Gateway_0l9eu31" targetRef="Event_0sdjoj4">
+      <bpmn:extensionElements>
+        <camunda:executionListener event="take">
+          <camunda:script scriptFormat="Groovy">def checkResult = "成功"
+execution.setVariable("targetResult",checkResult)</camunda:script>
+        </camunda:executionListener>
+      </bpmn:extensionElements>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_call_activity_subprocess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="219" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_134yv6m_di" bpmnElement="Gateway_1523b7s">
+        <dc:Bounds x="295" y="212" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1pw4ljb_di" bpmnElement="Activity_0hzffqa">
+        <dc:Bounds x="480" y="84" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_10pgur6_di" bpmnElement="Activity_15v8539">
+        <dc:Bounds x="480" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1hasgt0_di" bpmnElement="Gateway_0l9eu31">
+        <dc:Bounds x="715" y="212" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_107lg75_di" bpmnElement="Activity_0elyzvm">
+        <dc:Bounds x="480" y="197" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0sdjoj4_di" bpmnElement="Event_0sdjoj4">
+        <dc:Bounds x="902" y="219" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_156519v_di" bpmnElement="Flow_156519v">
+        <di:waypoint x="320" y="212" />
+        <di:waypoint x="320" y="124" />
+        <di:waypoint x="480" y="124" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_132s3bi_di" bpmnElement="Flow_132s3bi">
+        <di:waypoint x="345" y="237" />
+        <di:waypoint x="480" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0085jp9_di" bpmnElement="Flow_0085jp9">
+        <di:waypoint x="320" y="262" />
+        <di:waypoint x="320" y="400" />
+        <di:waypoint x="480" y="400" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pgl5vu_di" bpmnElement="Flow_0pgl5vu">
+        <di:waypoint x="580" y="124" />
+        <di:waypoint x="740" y="124" />
+        <di:waypoint x="740" y="212" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ykzvam_di" bpmnElement="Flow_0ykzvam">
+        <di:waypoint x="580" y="400" />
+        <di:waypoint x="740" y="400" />
+        <di:waypoint x="740" y="262" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hzjvnr_di" bpmnElement="Flow_1hzjvnr">
+        <di:waypoint x="580" y="237" />
+        <di:waypoint x="715" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1yrafj9_di" bpmnElement="Flow_1yrafj9">
+        <di:waypoint x="215" y="237" />
+        <di:waypoint x="295" y="237" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13o8w15_di" bpmnElement="Flow_13o8w15">
+        <di:waypoint x="765" y="237" />
+        <di:waypoint x="902" y="237" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

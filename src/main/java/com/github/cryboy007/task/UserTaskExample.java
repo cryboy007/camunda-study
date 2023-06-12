@@ -5,16 +5,14 @@ import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.variable.VariableMap;
 import org.camunda.bpm.engine.variable.Variables;
+import org.glassfish.jersey.internal.guava.Lists;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName UserTaskExampl
@@ -43,7 +41,11 @@ public class UserTaskExample {
 //        leaders.add("wangwu");
 //        leaders.add("tony");
 //        variables.put("leaders",leaders);
-        variables.put("originDays",10);
+//        variables.put("originDays",10);
+//        List<String> videoNames = new ArrayList<>();
+//        videoNames.add("张三丰传奇");
+//        variables.put("videoNames",videoNames);
+        variables.putValue("videoNames", Arrays.asList("张三丰传奇","西游记","红楼梦"));
         runtimeService.startProcessInstanceByKey(processKey,variables);
 
     }

@@ -103,6 +103,17 @@
 			<version>${mysql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- 引擎添加Groovy脚本的支持 -->
+		<dependency>
+			<groupId>org.codehaus.groovy</groupId>
+			<artifactId>groovy-all</artifactId>
+			<version>3.0.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
+			<artifactId>http-builder</artifactId>
+			<version>0.7.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
