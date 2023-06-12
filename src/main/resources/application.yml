@@ -47,3 +47,10 @@ camunda.bpm.client:
   basic-auth:
     username: hetao
     password: admin123
+
+##SDK
+feign:
+  client:
+    config:
+      default:
+        url: ${camunda.bpm.client.base-url}

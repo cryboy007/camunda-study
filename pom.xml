@@ -20,6 +20,9 @@
 		<camunda.mockito>5.15.0</camunda.mockito>
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<mysql.version>8.0.32</mysql.version>
+
+		<camunda-platform-7-rest-client-spring-boot.version>7.18.0</camunda-platform-7-rest-client-spring-boot.version>
+		<spring-cloud.version>2021.0.5</spring-cloud.version>
 	</properties>
 
 
@@ -39,6 +42,14 @@
 				<groupId>org.camunda.bpm</groupId>
 				<artifactId>camunda-bom</artifactId>
 				<version>${camunda.spring.boot.starter.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -103,6 +114,22 @@
 			<version>${mysql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+
+
+		<dependency>
+			<groupId>org.camunda.community.rest</groupId>
+			<artifactId>camunda-platform-7-rest-client-spring-boot-starter</artifactId>
+			<version>${camunda-platform-7-rest-client-spring-boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.github.openfeign</groupId>
+			<artifactId>feign-httpclient</artifactId>
+		</dependency>
+
 		<!-- 引擎添加Groovy脚本的支持 -->
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
