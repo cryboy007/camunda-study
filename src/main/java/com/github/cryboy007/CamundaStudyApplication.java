@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableProcessApplication("myCamundaStudyApplication")
 @EnableScheduling
 @ComponentScan(basePackages = {"com.github.cryboy007.task","com.github.cryboy007.config",
-		"com.github.cryboy007.listens","com.github.cryboy007.rest"})
+		"com.github.cryboy007.listens","com.github.cryboy007.rest","com.github.cryboy007.connector"})
 @EnableCamundaRestClient
 public class CamundaStudyApplication {
 

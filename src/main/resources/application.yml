@@ -36,7 +36,7 @@ camunda:
       db-reporter-activate: false
 #    webapp:
 #      application-path: camunda
-
+#    auto-deployment-enabled: false
 camunda.bpm.client:
   #base-url: http://10.10.10.3:7190/engine-rest # The URL pointing to the Camunda Platform Runtime REST API
   base-url: http://localhost:8080/engine-rest #使用本机

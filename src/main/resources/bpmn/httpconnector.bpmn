@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1vab6c7" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="Process_connector_test" name="connector-test" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="id" label="id" type="long" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_0lsx0v1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_0lsx0v1" sourceRef="StartEvent_1" targetRef="Activity_1wtslfb" />
+    <bpmn:serviceTask id="Activity_1wtslfb" name="获取客户信息">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">GET</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://localhost:8080/testHttpConnector/${id}</camunda:inputParameter>
+            <camunda:outputParameter name="sex">
+              <camunda:script scriptFormat="JavaScript">var res = connector.getVariable("response");
+var user = S(response)
+var sex = user.prop("sex").stringValue();
+sex;
+</camunda:script>
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0lsx0v1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v39ayb</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_0ticivt">
+      <bpmn:incoming>Flow_1v39ayb</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qc9qof</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1ct930g</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1v39ayb" sourceRef="Activity_1wtslfb" targetRef="Gateway_0ticivt" />
+    <bpmn:sequenceFlow id="Flow_1qc9qof" name="sex=男" sourceRef="Gateway_0ticivt" targetRef="Activity_1q1h056">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sex=='男'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1ct930g" name="sex=女" sourceRef="Gateway_0ticivt" targetRef="Activity_087hpnz">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${sex=='女'}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_1q1h056" name="男士体检套餐" camunda:type="external" camunda:topic="male_health_plan">
+      <bpmn:incoming>Flow_1qc9qof</bpmn:incoming>
+      <bpmn:outgoing>Flow_1klrbyn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_087hpnz" name="女士体检套餐" camunda:type="external" camunda:topic="female_health_plan">
+      <bpmn:incoming>Flow_1ct930g</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qy7rgn</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0rqn9vg">
+      <bpmn:incoming>Flow_1klrbyn</bpmn:incoming>
+      <bpmn:incoming>Flow_1qy7rgn</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1klrbyn" sourceRef="Activity_1q1h056" targetRef="Event_0rqn9vg" />
+    <bpmn:sequenceFlow id="Flow_1qy7rgn" sourceRef="Activity_087hpnz" targetRef="Event_0rqn9vg" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_connector_test">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="199" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ppakx4_di" bpmnElement="Activity_1wtslfb">
+        <dc:Bounds x="270" y="177" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ticivt_di" bpmnElement="Gateway_0ticivt" isMarkerVisible="true">
+        <dc:Bounds x="425" y="192" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nkcuac_di" bpmnElement="Activity_1q1h056">
+        <dc:Bounds x="520" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0rqn9vg_di" bpmnElement="Event_0rqn9vg">
+        <dc:Bounds x="892" y="199" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1ncjccv_di" bpmnElement="Activity_087hpnz">
+        <dc:Bounds x="520" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0lsx0v1_di" bpmnElement="Flow_0lsx0v1">
+        <di:waypoint x="215" y="217" />
+        <di:waypoint x="270" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v39ayb_di" bpmnElement="Flow_1v39ayb">
+        <di:waypoint x="370" y="217" />
+        <di:waypoint x="425" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qc9qof_di" bpmnElement="Flow_1qc9qof">
+        <di:waypoint x="450" y="192" />
+        <di:waypoint x="450" y="120" />
+        <di:waypoint x="520" y="120" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="448" y="153" width="35" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ct930g_di" bpmnElement="Flow_1ct930g">
+        <di:waypoint x="450" y="242" />
+        <di:waypoint x="450" y="330" />
+        <di:waypoint x="520" y="330" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="447" y="283" width="36" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1klrbyn_di" bpmnElement="Flow_1klrbyn">
+        <di:waypoint x="620" y="120" />
+        <di:waypoint x="756" y="120" />
+        <di:waypoint x="756" y="217" />
+        <di:waypoint x="892" y="217" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qy7rgn_di" bpmnElement="Flow_1qy7rgn">
+        <di:waypoint x="620" y="330" />
+        <di:waypoint x="761" y="330" />
+        <di:waypoint x="761" y="217" />
+        <di:waypoint x="892" y="217" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

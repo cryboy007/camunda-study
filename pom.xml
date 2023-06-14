@@ -23,6 +23,7 @@
 
 		<camunda-platform-7-rest-client-spring-boot.version>7.18.0</camunda-platform-7-rest-client-spring-boot.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
+		<version.connect>1.5.6</version.connect>
 	</properties>
 
 
@@ -52,6 +53,14 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.camunda.connect</groupId>
+				<artifactId>camunda-connect-bom</artifactId>
+				<scope>import</scope>
+				<type>pom</type>
+				<version>${version.connect}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -140,6 +149,37 @@
 			<groupId>org.codehaus.groovy.modules.http-builder</groupId>
 			<artifactId>http-builder</artifactId>
 			<version>0.7.1</version>
+		</dependency>
+		<!--connectors -->
+		<dependency>
+			<groupId>org.camunda.connect</groupId>
+			<artifactId>camunda-connect-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.camunda.connect</groupId>
+			<artifactId>camunda-connect-connectors-all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.camunda.bpm</groupId>
+			<artifactId>camunda-engine-plugin-connect</artifactId>
+		</dependency>
+
+		<!-- SPIN JSON-->
+		<dependency>
+			<groupId>org.camunda.spin</groupId>
+			<artifactId>camunda-spin-dataformat-all</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.camunda.bpm</groupId>
+			<artifactId>camunda-engine-plugin-spin</artifactId>
+		</dependency>
+		<!--JDK11后面不支持javaScript引擎 -->
+		<dependency>
+			<groupId>org.openjdk.nashorn</groupId>
+			<artifactId>nashorn-core</artifactId>
+			<version>15.3</version>
 		</dependency>
 	</dependencies>
 
