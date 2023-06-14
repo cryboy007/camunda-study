@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0x1jfq8" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.11.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.19.0">
+  <bpmn:process id="transaction" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" camunda:initiator="starter">
+      <bpmn:outgoing>Flow_1lbi96v</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1lbi96v" sourceRef="StartEvent_1" targetRef="Activity_77888" />
+    <bpmn:userTask id="Activity_77888" name="请假申请" camunda:assignee="${starter}">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="name" label="姓名" type="string" defaultValue="${starter}">
+            <camunda:properties />
+            <camunda:validation />
+          </camunda:formField>
+          <camunda:formField id="reason" label="备注" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1lbi96v</bpmn:incoming>
+      <bpmn:outgoing>Flow_07yxzus</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="Event_19x5aac">
+      <bpmn:incoming>Flow_1gtdwmm</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_07yxzus" sourceRef="Activity_77888" targetRef="Activity_0i9dm39" />
+    <bpmn:serviceTask id="Activity_0i9dm39" name="测试异步延续" camunda:asyncBefore="true" camunda:exclusive="false" camunda:class="com.github.cryboy007.task.AsynchronousTask">
+      <bpmn:incoming>Flow_07yxzus</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gtdwmm</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1gtdwmm" sourceRef="Activity_0i9dm39" targetRef="Event_19x5aac" />
+    <bpmn:textAnnotation id="TextAnnotation_081lmz6">
+      <bpmn:text>添加异步延续</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1b064jb" sourceRef="Activity_0i9dm39" targetRef="TextAnnotation_081lmz6" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="transaction">
+      <bpmndi:BPMNShape id="TextAnnotation_081lmz6_di" bpmnElement="TextAnnotation_081lmz6">
+        <dc:Bounds x="570" y="50" width="100" height="30" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02wcd62_di" bpmnElement="Activity_77888">
+        <dc:Bounds x="270" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_19x5aac_di" bpmnElement="Event_19x5aac">
+        <dc:Bounds x="662" y="159" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1nkw1m2_di" bpmnElement="Activity_0i9dm39">
+        <dc:Bounds x="470" y="137" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_1b064jb_di" bpmnElement="Association_1b064jb">
+        <di:waypoint x="556" y="137" />
+        <di:waypoint x="607" y="80" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lbi96v_di" bpmnElement="Flow_1lbi96v">
+        <di:waypoint x="215" y="177" />
+        <di:waypoint x="270" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07yxzus_di" bpmnElement="Flow_07yxzus">
+        <di:waypoint x="370" y="177" />
+        <di:waypoint x="470" y="177" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gtdwmm_di" bpmnElement="Flow_1gtdwmm">
+        <di:waypoint x="570" y="177" />
+        <di:waypoint x="662" y="177" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

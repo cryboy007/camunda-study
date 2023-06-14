@@ -34,6 +34,8 @@ camunda:
     metrics:
       enabled: false
       db-reporter-activate: false
+    #设置异步延续重试次数
+    default-number-of-retries:  3
 #    webapp:
 #      application-path: camunda
 #    auto-deployment-enabled: false
